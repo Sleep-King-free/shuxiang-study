@@ -1,0 +1,38 @@
+{
+  "kind": "real-api-test-summary",
+  "date": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "provider": "DeepSeek",
+  "model": "deepseek-flash",
+  "promptVersion": "2.0.1",
+  "task": "plan",
+  "input": {
+    "library": "grid",
+    "direction": "discussion",
+    "theme": "城市阅读小讨论",
+    "audience": "青年读者",
+    "participants": 8,
+    "duration": 15,
+    "budget": 0,
+    "notes": ""
+  },
+  "observedResult": {
+    "applicationStatus": 200,
+    "upstreamStatus": 200,
+    "contentCharacters": 4635,
+    "containsEighthSection": true,
+    "truncationRejected": false,
+    "humanReviewed": false
+  },
+  "costObservation": {
+    "approximatelyCNY": 0.03,
+    "source": "用户在聊天中确认服务商账单延迟显示后的扣费",
+    "scope": "本次联调多次诊断及生成的合计观察，非单次请求价格",
+    "independentlyVerified": false
+  },
+  "originalContent": null,
+  "usage": null,
+  "requestId": null,
+  "exactTimestamp": null,
+  "limitations": "原始生成全文和逐次用量未保存；该记录仅作真实API联调摘要，不是可载入策划稿或已审核活动记录。"
+}
