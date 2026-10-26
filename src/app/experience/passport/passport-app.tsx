@@ -627,7 +627,11 @@ export default function PassportApp() {
                       </span>
                     </div>
                     <div className="pp-read-bar" aria-hidden="true">
-                      <i style={{ width: `${(active.earnedBadges.length / BADGE_TOTAL) * 100}%` }} />
+                      <i
+                        style={{
+                          transform: `scaleX(${active.earnedBadges.length / BADGE_TOTAL})`,
+                        }}
+                      />
                     </div>
                     <button
                       className="pp-read-btn"

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Cinematic from '@/components/cinematic/cinematic';
 import CineOpenButton from '@/components/cine-open-button';
 import SiteFooter from '@/components/site-footer';
+import { BADGE_IMG, MAP_IMG } from '@/lib/img-props';
 
 export const metadata: Metadata = {
   title: '「数」香满屋｜香山书房数字文化运营实践',
@@ -87,12 +88,12 @@ export default function Home() {
             <div className="hero-visual city-scroll reveal" aria-label="石岐书房地图与数字护照视觉">
               <div className="scroll-map">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/distribution/shiqi-map.jpg" alt="中山石岐街道六间香山书房地图" />
+                <img {...MAP_IMG} alt="中山石岐街道六间香山书房地图" fetchPriority="high" decoding="async" />
                 <span className="route-line" aria-hidden="true" />
               </div>
               <div className="passport-peek">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/passport/badge-collection.jpg" alt="20枚香山书房数字文化护照徽章" />
+                <img {...BADGE_IMG} alt="20枚香山书房数字文化护照徽章" decoding="async" />
                 <div>
                   <strong>20枚徽章</strong>
                   <span>把到访、阅读、活动和反馈连成可持续旅程</span>
@@ -163,7 +164,7 @@ export default function Home() {
             <div className="system-stage reveal">
               <div className="system-main">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/passport/badge-collection.jpg" alt="数字文化护照20枚徽章" />
+                <img {...BADGE_IMG} alt="数字文化护照20枚徽章" loading="lazy" decoding="async" />
                 <div className="system-caption">
                   <b>文化护照</b>
                   <span>以徽章、任务和积分记录阅读旅程</span>

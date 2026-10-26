@@ -6,7 +6,7 @@ import { join } from 'node:path';
 const OUT = join(process.cwd(), 'docs', 'compare', 'ai-live');
 await mkdir(OUT, { recursive: true });
 
-const ORIGIN = 'http://localhost:3100';
+const ORIGIN = 'http://localhost:3200';
 const REPORT = `# 城市阅读小讨论
 
 ## 一、活动定位

@@ -41,10 +41,23 @@ export default function SiteHeader() {
   const headerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 12);
+    // 滚动回调用 rAF 节流：触屏下 scroll 事件一秒能来上百次，
+    // 每次都读 scrollY + 判断状态会造成额外的主线程抖动。
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 12);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(update);
+    };
     update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {

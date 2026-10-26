@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import Link from 'next/link';
 import BookTabs from '@/components/pages/book-tabs';
 import SiteFooter from '@/components/site-footer';
+import { BADGE_IMG, ipImg } from '@/lib/img-props';
 
 export const metadata: Metadata = {
   title: '数字运营方案｜「数」香满屋',
@@ -67,13 +68,14 @@ const AI_STAGES = [
   },
 ];
 
+// 只存文件名，具体尺寸见 src/lib/img-props.ts（手机端取 420w 变体，约 26KB/张）
 const IP_IMAGES = [
-  { src: '/assets/ip/ip1.jpg', alt: '阅小筑IP系列' },
-  { src: '/assets/ip/ip8.jpg', alt: '小窗榕榕IP玩偶' },
-  { src: '/assets/ip/ip7.jpg', alt: '小窗榕榕IP应用' },
-  { src: '/assets/ip/ip2.jpg', alt: '阅小筑笔记本' },
-  { src: '/assets/ip/ip10.jpg', alt: '小窗榕榕钥匙扣' },
-  { src: '/assets/ip/ip12.jpg', alt: '小窗榕榕文具系列' },
+  { name: 'ip1', alt: '阅小筑IP系列' },
+  { name: 'ip8', alt: '小窗榕榕IP玩偶' },
+  { name: 'ip7', alt: '小窗榕榕IP应用' },
+  { name: 'ip2', alt: '阅小筑笔记本' },
+  { name: 'ip10', alt: '小窗榕榕钥匙扣' },
+  { name: 'ip12', alt: '小窗榕榕文具系列' },
 ];
 
 export default function SolutionPage() {
@@ -139,7 +141,7 @@ export default function SolutionPage() {
             </div>
             <div className="feature-media">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/passport/badge-collection.jpg" alt="20枚香山书房数字文化护照徽章设计" />
+              <img {...BADGE_IMG} alt="20枚香山书房数字文化护照徽章设计" loading="lazy" decoding="async" />
               <div>
                 <div className="step-flow">
                   {STEPS.map((step, index) => (
@@ -242,9 +244,9 @@ export default function SolutionPage() {
             </div>
             <div className="ip-grid">
               {IP_IMAGES.map((image) => (
-                <a key={image.src} href={image.src} target="_blank">
+                <a key={image.name} href={`/assets/ip/${image.name}.jpg`} target="_blank">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={image.src} alt={image.alt} />
+                  <img {...ipImg(image.name)} alt={image.alt} loading="lazy" decoding="async" />
                 </a>
               ))}
             </div>

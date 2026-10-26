@@ -1499,6 +1499,10 @@ section.alt {
 
 .cine-shell.active {
   display: block;
+  /* 手势由组件自己接管（左右滑动切章），在覆盖层上屏蔽浏览器原生滚动，
+     这样就不必在 window 上常驻非 passive 的 touchmove 监听。 */
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 .cine-shell canvas {
@@ -1727,9 +1731,12 @@ section.alt {
 
 .load-bar {
   height: 100%;
-  width: 0;
+  width: 100%;
   background: var(--cine-gold);
-  transition: width 0.2s;
+  /* 用 transform 而不是 width 做进度动画：scaleX 只走合成层，不触发布局重排 */
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s;
 }
 
 .load-meta {
@@ -4762,9 +4769,12 @@ footer {
 .pp-read-bar i {
   display: block;
   height: 100%;
+  width: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #c95736, #e7c477);
-  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* 阅读进度：scaleX 代替 width 过渡，避免每帧重排 */
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pp-read-btn {
@@ -5645,5 +5655,61 @@ footer {
     max-height: calc(100vh - 24px);
     max-height: calc(100dvh - 24px);
     overflow-y: auto;
+  }
+}
+
+/* ============================================================
+   移动端性能降级（≤768px）
+   - 关掉「每帧都要整块重绘」的装饰效果
+   - 毛玻璃导航改为不透明底色，滚动手感差别很大
+   - 只保留 transform / opacity 这类合成层动画
+   ============================================================ */
+@media (max-width: 768px) {
+  /* 固定导航上的 backdrop-filter 要在每次滚动时重新采样背后像素，
+     是中低端手机上最明显的掉帧来源；改成接近纯色即可，视觉几乎无差 */
+  .site-header {
+    background: rgba(246, 239, 225, 0.97);
+    /* 标准声明放在最后：压缩器会合并这两条同值声明，只保留最后一条 */
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  body.scrolled .site-header,
+  body.menu-open .site-header {
+    background: #fffdf7;
+    box-shadow: 0 2px 10px rgba(25, 53, 46, 0.06);
+  }
+
+  /* 骨架屏的 background-position 扫光是全量重绘，手机上换成静止底色 */
+  .pp-skeleton span {
+    animation: none;
+    background: rgba(15, 63, 53, 0.09);
+  }
+
+  /* 徽章弹窗背后的光晕脉冲收益很低，直接定格 */
+  .pp-reward-medal::before {
+    animation: none;
+    opacity: 0.8;
+  }
+
+  /* 大圆角阴影卡片在滚动时容易触发离屏重绘，阴影收敛一档 */
+  .ip-grid a,
+  .passport-peek img,
+  .system-main img {
+    box-shadow: none;
+  }
+}
+
+/* 尊重系统的「减弱动态效果」开关：关掉所有装饰性循环动画 */
+@media (prefers-reduced-motion: reduce) {
+  .pp-skeleton span,
+  .pp-reward-medal::before,
+  .ai-live-spin {
+    animation: none;
+  }
+
+  .load-bar,
+  .pp-read-bar i {
+    transition: none;
   }
 }

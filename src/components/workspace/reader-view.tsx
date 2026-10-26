@@ -7,6 +7,7 @@ import { currentOutput, downloadBlob, isApproved, nowIso } from './model';
 import { JOURNEY_TASKS, type JourneyRecord } from './journey-data';
 import { useJourney } from './use-journey';
 import { drawJourneyCard, drawReadingCard } from './canvas-art';
+import { BADGE_IMG } from '@/lib/img-props';
 
 type Props = {
   record: ActivityRecord;
@@ -359,7 +360,7 @@ export default function ReaderView({ record, records, hidden, update }: Props) {
             <summary>查看全部20枚徽章设计</summary>
             <a href="/assets/passport/badge-collection.jpg" target="_blank" rel="noopener">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/passport/badge-collection.jpg" alt="20枚徽章设计合集" loading="lazy" />
+              <img {...BADGE_IMG} alt="20枚徽章设计合集" loading="lazy" decoding="async" />
             </a>
             <p className="workspace-note">四枚体验章使用合集中的对应书房图形；其余为设计展示。</p>
           </details>
@@ -441,7 +442,7 @@ export default function ReaderView({ record, records, hidden, update }: Props) {
 
             <div className="passport-strip">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/passport/badge-collection.jpg" alt="20枚文化护照徽章设计" loading="lazy" />
+              <img {...BADGE_IMG} alt="20枚文化护照徽章设计" loading="lazy" decoding="async" />
               <p>{`本设备已完成 ${records.filter((item) => item.reading?.completedAt).length} 个活动阅读任务。`}</p>
               <p className="workspace-note">20枚为现有设计素材，尚未逐枚建立书房核销与权益规则。</p>
             </div>

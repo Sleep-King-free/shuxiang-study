@@ -3,6 +3,7 @@ import Link from 'next/link';
 import PointExplorer from '@/components/pages/point-explorer';
 import SiteFooter from '@/components/site-footer';
 import { profiles } from '@/lib/content';
+import { MAP_IMG } from '@/lib/img-props';
 
 export const metadata: Metadata = {
   title: '认识香山书房｜「数」香满屋',
@@ -132,7 +133,7 @@ export default function LibrariesPage() {
               <figure className="map-frame reveal">
                 <a href="/assets/distribution/shiqi-map.jpg" target="_blank">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/assets/distribution/shiqi-map.jpg" alt="中山石岐街道香山书房地图" />
+                  <img {...MAP_IMG} alt="中山石岐街道香山书房地图" loading="lazy" decoding="async" />
                 </a>
                 <figcaption>
                   点击查看原图。该图展示石岐代表点位，不等同于全市106所书房完整分布。

@@ -6,6 +6,7 @@ import type { ActivityRecord, PlanInputs } from './model';
 import { downloadContent, formatWhen, nowIso } from './model';
 import { composeDraft, LOCAL_PROVIDER } from './planner-draft';
 import { EXAMPLE_REQUEST } from './presets';
+import { MAP_IMG } from '@/lib/img-props';
 
 type Props = {
   record: ActivityRecord;
@@ -615,7 +616,7 @@ export default function PlannerView({ record, hidden, update, onReset }: Props) 
 
           <div className="planner-empty" hidden={hasDraft}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/distribution/shiqi-map.jpg" alt="香山书房文化地图" />
+            <img {...MAP_IMG} alt="香山书房文化地图" loading="lazy" decoding="async" />
             <p>从一间书房出发，连接阅读、活动与地方文化。</p>
           </div>
 

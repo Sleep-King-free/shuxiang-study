@@ -25,7 +25,7 @@ const shot = (page, name) => page.locator('.pp-phone').screenshot({ path: join(O
 // ---------- 桌面 ----------
 {
   const { context, page } = await newPage({ width: 1440, height: 1200 });
-  await page.goto('http://localhost:3100/experience/passport', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:3200/experience/passport', { waitUntil: 'networkidle' });
   await page.evaluate(() => localStorage.removeItem('shuxiang-passport-v2'));
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForSelector('.pp-view');
@@ -111,7 +111,7 @@ const shot = (page, name) => page.locator('.pp-phone').screenshot({ path: join(O
 // ---------- 手机 ----------
 {
   const { context, page } = await newPage({ width: 390, height: 844 });
-  await page.goto('http://localhost:3100/experience/passport', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:3200/experience/passport', { waitUntil: 'networkidle' });
   await page.evaluate(() => localStorage.removeItem('shuxiang-passport-v2'));
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForSelector('.pp-view');

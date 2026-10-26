@@ -355,6 +355,19 @@ export default function Cinematic() {
   useEffect(() => {
     const backgroundLoad = () => {
       if (ctrl.current.loading) return;
+      // 手机上不做后台预取：序章帧约 1.6MB，会在用户刚开始滑动页面时抢带宽和主线程。
+      // 真要看序章时 open() 里会正常加载，只是改用显式触发。
+      const narrow = window.matchMedia('(max-width: 768px)').matches;
+      const conn = (
+        navigator as Navigator & {
+          connection?: { saveData?: boolean; effectiveType?: string };
+        }
+      ).connection;
+      const stingy =
+        Boolean(conn?.saveData) ||
+        ['slow-2g', '2g', '3g'].includes(conn?.effectiveType ?? '');
+      if (narrow || stingy) return;
+
       if ('requestIdleCallback' in window) {
         (
           window as unknown as {
@@ -392,6 +405,10 @@ export default function Cinematic() {
   }, [open]);
 
   useEffect(() => {
+    // 关键性能约束：wheel / touchmove 一旦以 { passive: false } 常驻挂在 window 上，
+    // 浏览器就无法走「滚动合成线程」的快速路径，整站滑动都会发粘（手机上尤其明显）。
+    // 因此这几个监听只在序章真正打开时才注册，关闭即全部摘掉。
+    if (!active) return;
     const c = ctrl.current;
     const onWheel = (event: WheelEvent) => {
       if (!c.active) return;
@@ -435,7 +452,10 @@ export default function Cinematic() {
       c.touchX = null;
       c.touchY = null;
     };
-    window.addEventListener('wheel', onWheel, { passive: false });
+    // 触屏设备根本不会产生 wheel 事件，注册一个非 passive 的 wheel 监听纯属白付代价；
+    // 只在「有精确指针」的设备上挂。触屏手势由下面的 touch 系列处理。
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (finePointer) window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('keydown', onKey);
     window.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: false });
@@ -454,7 +474,7 @@ export default function Cinematic() {
       // 兜底：卸载、路由切换或热更新后，清掉任何残留的内联滚动锁
       document.body.style.removeProperty('overflow');
     };
-  }, [advance, close, resize, retreat]);
+  }, [active, advance, close, resize, retreat]);
 
   return (
     <>
@@ -572,7 +592,7 @@ export default function Cinematic() {
             <h2>正在准备电影序章</h2>
             <p>光影即将展开，请稍候。</p>
             <div className="load-track">
-              <div className="load-bar" id="cineLoadBar" style={{ width: `${pct}%` }} />
+              <div className="load-bar" id="cineLoadBar" style={{ transform: `scaleX(${pct / 100})` }} />
             </div>
             <div className="load-meta">
               <span>电影序章</span>

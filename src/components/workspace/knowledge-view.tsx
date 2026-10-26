@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { plannerLibraries, points } from '@/lib/content';
+import { MAP_IMG } from '@/lib/img-props';
 
 type Props = {
   hidden: boolean;
@@ -37,7 +38,7 @@ export default function KnowledgeView({ hidden, onUseLibrary }: Props) {
         <figure>
           <a href="/assets/distribution/shiqi-map.jpg" target="_blank" rel="noopener">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/distribution/shiqi-map.jpg" alt="六间代表性书房及周边场景地图" loading="lazy" />
+            <img {...MAP_IMG} alt="六间代表性书房及周边场景地图" loading="lazy" decoding="async" />
           </a>
           <figcaption>六间代表书房地图 · 可查看完整原图，不等同于全市106个节点。</figcaption>
         </figure>
