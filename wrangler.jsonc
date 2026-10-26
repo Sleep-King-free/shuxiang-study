@@ -1,0 +1,9 @@
+{
+  // Cloudflare Pages 项目名，与 GitHub 仓库名、package.json 的 name 保持一致
+  "name": "shuxiang-study",
+  // 静态产物目录：next.config.ts 里 output: 'export' 的默认输出就是 out/，
+  // 不能写成 .next（导出模式不会生成可部署的 .next）或 dist（本项目没有 dist）
+  "pages_build_output_dir": "out",
+  // Pages Functions 的运行时兼容日期，functions/ 目录下的接口按此版本运行
+  "compatibility_date": "2026-10-20"
+}
