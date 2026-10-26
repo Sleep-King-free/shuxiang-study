@@ -294,7 +294,6 @@ export default function Cinematic() {
     c.playing = false;
     setActive(true);
     setStation(0);
-    document.body.style.overflow = 'hidden';
     setLoaderDone(c.ready);
     setCaptionOn(true);
     setDataOn(false);
@@ -311,7 +310,9 @@ export default function Cinematic() {
     const c = ctrl.current;
     c.active = false;
     setActive(false);
-    document.body.style.overflow = '';
+    // 不再给 body 加内联 overflow:hidden —— 覆盖层本身是 fixed inset:0，
+    // 关闭后由外层重新掌控滚动，避免任何情况下整页被锁死。
+    document.body.style.removeProperty('overflow');
     try {
       sessionStorage.setItem('shuxiangIntroSeen', '1');
     } catch {}
@@ -450,6 +451,8 @@ export default function Cinematic() {
       window.removeEventListener('resize', resize);
       window.visualViewport?.removeEventListener('resize', resize);
       cancelAnimationFrame(c.raf);
+      // 兜底：卸载、路由切换或热更新后，清掉任何残留的内联滚动锁
+      document.body.style.removeProperty('overflow');
     };
   }, [advance, close, resize, retreat]);
 
