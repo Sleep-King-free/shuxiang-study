@@ -31,6 +31,9 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 118px;
+  /* iOS 旋转屏幕时会自动放大正文字号，撑破容器，这里锁定 100% */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -40,6 +43,8 @@ body {
   font-family: var(--sans);
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
+  /* 兜底：任何越界元素都不产生横向滚动条（clip 不创建滚动容器，sticky 不受影响） */
+  overflow-x: clip;
 }
 
 body.menu-open {
@@ -665,7 +670,10 @@ section.alt {
    Home
    ============================================================ */
 .home-hero {
+  /* 100vh 在手机浏览器里按「最大视口」算，地址栏展开时底部会被挤到屏幕外，
+     因此补一条 dvh：随地址栏收放动态变化，旧浏览器回落到 vh */
   min-height: calc(100vh - 74px);
+  min-height: calc(100dvh - 74px);
   background: linear-gradient(115deg, var(--paper) 0%, #fbf7eb 48%, #e8dec8 100%);
 }
 
@@ -1435,6 +1443,32 @@ section.alt {
   padding: 24px;
   border-radius: 8px;
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+}
+
+.opening-choice-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.opening-choice-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.opening-choice-close:focus-visible {
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 2px;
 }
 
 .opening-choice p {
@@ -5530,5 +5564,86 @@ footer {
   .pp-toast,
   .pp-read-bar i {
     transition: none;
+  }
+}
+
+/* ============================================================
+   全局移动端适配（≤768px）
+   - 左右分栏统一改为竖向堆叠，避免两栏被压到互相重叠
+   - 横向按钮组改为整行铺满
+   - 图片 / 表格 / 画布不撑破容器
+   ============================================================ */
+@media (max-width: 768px) {
+  .hero-grid,
+  .home-hero .hero-grid,
+  .section-head,
+  .proof-grid,
+  .system-stage,
+  .map-layout,
+  .feature-media,
+  .ai-live-body,
+  .planner-grid,
+  .review-grid,
+  .journey-grid,
+  .heritage-reader,
+  .page-turn {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* 单列之后原来的左右分栏间距改为上下留白 */
+  .feature-media,
+  .proof-grid,
+  .system-stage,
+  .map-layout {
+    gap: 22px;
+  }
+
+  /* 横向按钮组竖排并撑满，避免两个按钮互相挤压 */
+  .button-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-row > * {
+    width: 100%;
+  }
+
+  /* 图片、画布、嵌入内容一律不超过容器宽度 */
+  img,
+  svg,
+  video,
+  iframe {
+    max-width: 100%;
+  }
+
+  /* 表格在窄屏内自行横向滚动，不撑破整页 */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* 长英文串 / 连续数字不换行会撑出屏幕，强制断行 */
+  h1,
+  h2,
+  h3,
+  p,
+  a,
+  li {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* 序章选择卡：手机上由右下角浮卡改为贴底整宽卡片，避免遮住正文按钮 */
+@media (max-width: 560px) {
+  .opening-choice {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    padding: 20px 20px 18px;
+    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
   }
 }

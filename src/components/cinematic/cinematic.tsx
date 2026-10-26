@@ -460,6 +460,19 @@ export default function Cinematic() {
     <>
       {choiceOpen && (
         <div className="opening-choice" id="openingChoice">
+          <button
+            className="opening-choice-close"
+            type="button"
+            aria-label="关闭序章提示"
+            onClick={() => {
+              try {
+                sessionStorage.setItem('shuxiangIntroSeen', '1');
+              } catch {}
+              setChoiceOpen(false);
+            }}
+          >
+            ×
+          </button>
           <div className="kicker">OPENING CHOICE</div>
           <h3>先看一段电影序章？</h3>
           <p>约两章，呈现“格子空间重生”与“问题数据浮现”。也可以直接进入正文，之后随时返回观看。</p>

@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# 本地移动端审计截图（体积大，不入库）
+/docs/compare/mobile-audit/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
