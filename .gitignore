@@ -39,6 +39,9 @@ yarn-error.log*
 # 本地移动端审计截图（体积大，不入库）
 /docs/compare/mobile-audit/
 
+# 本地护照页桌面端验收截图
+/docs/compare/passport-desktop/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

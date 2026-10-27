@@ -5581,6 +5581,424 @@ footer {
 }
 
 /* ============================================================
+   数字文化护照 · 桌面端布局（≥769px）
+   - 拆除手机模型外壳：没有 bezel、没有 44px 圆角、没有 780px 定高与内滚动
+   - 护照内容在 .wrap（≤1180px）内直接铺开，卡片改成多列网格
+   - 右侧 DEMO NOTES 移到最底部，缩小字号、降低对比度，只作注脚
+   - 全部限定在 min-width 断点内，手机端（≤768px）样式不受影响
+   ============================================================ */
+@media (min-width: 769px) {
+  .pp-board {
+    padding: 70px 0 26px;
+  }
+
+  .pp-stage {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 40px;
+    gap: 22px;
+  }
+
+  .pp-phone {
+    width: 100%;
+  }
+
+  /* 外壳拆除：深色机身、44px 圆角、投影全部去掉，只留一张纸面 */
+  .pp-frame {
+    display: block;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .pp-screen {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    padding: 26px 32px 30px;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background: linear-gradient(180deg, #fbf7ef 0%, #f6efe1 58%, #f2e8d6 100%);
+    box-shadow: 0 14px 34px rgba(15, 63, 53, 0.06);
+  }
+
+  /* 手机状态栏与底部横条在桌面端没有意义 */
+  .pp-status,
+  .pp-home-bar,
+  .pp-caption {
+    display: none;
+  }
+
+  /* 桌面端不需要「一屏内滚动」，整页拉通 */
+  .pp-view--home {
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  /* ---------- 绑定页：左「空册」+ 右表单 ---------- */
+  .pp-view:not(.pp-view--home) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-content: center;
+    gap: 28px 44px;
+    min-height: 340px;
+  }
+
+  .pp-view:not(.pp-view--home) > .pp-brand {
+    grid-column: 1 / -1;
+    padding-bottom: 0;
+    font-size: 15px;
+  }
+
+  /* 去掉中间层盒子，让空册与表单直接成为同一行的两列 */
+  .pp-auth-block {
+    display: contents;
+  }
+
+  .pp-ghost {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    margin-bottom: 0;
+    padding: 34px 22px;
+    overflow: hidden;
+  }
+
+  /* 空册里补一个淡墨「数」字，避免宽屏下整块留白太虚 */
+  .pp-ghost::after {
+    content: '数';
+    position: absolute;
+    right: -12px;
+    bottom: -54px;
+    font: 700 150px/1 var(--serif);
+    color: rgba(15, 63, 53, 0.045);
+    pointer-events: none;
+  }
+
+  .pp-ghost-seal {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    font-size: 19px;
+  }
+
+  .pp-ghost b,
+  .pp-ghost small {
+    position: relative;
+  }
+
+  .pp-ghost b {
+    font-size: 14px;
+  }
+
+  .pp-ghost small {
+    font-size: 11px;
+  }
+
+  .pp-auth {
+    align-self: start;
+  }
+
+  .pp-auth h2 {
+    margin-top: 16px;
+    font-size: 28px;
+  }
+
+  .pp-auth-copy {
+    font-size: 13px;
+  }
+
+  /* 空册与表单在宽度上已撑开，这里让三格数据横贯整行 */
+  .pp-values {
+    grid-column: 1 / -1;
+    margin: 2px 0 0;
+    padding-top: 22px;
+  }
+
+  .pp-values b {
+    font-size: 24px;
+  }
+
+  .pp-values span {
+    font-size: 11px;
+  }
+
+  /* ---------- 个人主页：通栏单列打底，内部改多列 ---------- */
+  .pp-view--home {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    align-content: start;
+  }
+
+  .pp-view--home .pp-block {
+    margin-top: 0;
+  }
+
+  .pp-nav {
+    padding-bottom: 0;
+  }
+
+  .pp-nav-title {
+    font-size: 15px;
+  }
+
+  /* 护照卡改为横向：左边身份，右边编号，宽屏不再空一半 */
+  .pp-id {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 40px;
+    padding: 20px 24px 16px;
+    border-radius: 18px;
+  }
+
+  .pp-id::after {
+    right: 4px;
+    bottom: -64px;
+    font-size: 152px;
+  }
+
+  .pp-id-top {
+    grid-column: 1 / -1;
+  }
+
+  .pp-id-body {
+    grid-column: 1;
+    margin: 12px 0 0;
+    gap: 16px;
+  }
+
+  .pp-id-name strong {
+    font-size: 21px;
+  }
+
+  .pp-id-name small {
+    font-size: 11px;
+  }
+
+  .pp-id-uid {
+    grid-column: 2;
+    grid-row: 2;
+    align-items: center;
+    min-width: 320px;
+    margin: 0;
+    padding: 4px 0 4px 40px;
+    border-top: 0;
+    border-left: 1px dashed rgba(231, 196, 119, 0.3);
+  }
+
+  .pp-uid {
+    font-size: 21px;
+    letter-spacing: 2px;
+  }
+
+  .pp-uid-copy {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+
+  .pp-id-foot {
+    grid-column: 1 / -1;
+    margin-top: 16px;
+    padding-top: 10px;
+    font-size: 10px;
+  }
+
+  /* 阅读数据：6 张卡片自适应多列，不再挤两列 */
+  .pp-block--data .pp-grid {
+    grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    gap: 10px;
+  }
+
+  .pp-block--data .pp-stat {
+    padding: 14px 14px;
+  }
+
+  .pp-block--data .pp-stat-value {
+    font-size: 21px;
+  }
+
+  .pp-block--data .pp-stat-label {
+    font-size: 11px;
+  }
+
+  /* 徽章墙：陈列柜由 5 列放宽到 10 列，20 枚刚好两行 */
+  .pp-block--badges .pp-case {
+    padding: 10px;
+  }
+
+  .pp-block--badges .pp-badges {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .pp-block--badges .pp-badge {
+    border-radius: 9px;
+  }
+
+  .pp-block--badges .pp-badge-icon {
+    font-size: 26px;
+  }
+
+  /* 个人身份：性别与头像各占一列 */
+  .pp-block--profile {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    align-items: start;
+  }
+
+  .pp-block--profile .pp-block-head {
+    grid-column: 1 / -1;
+  }
+
+  .pp-block--profile .pp-row + .pp-row {
+    margin-top: 0;
+  }
+
+  .pp-block--profile .pp-row {
+    padding: 13px 14px;
+  }
+
+  .pp-note {
+    margin: 0;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .pp-actions {
+    grid-template-columns: repeat(2, minmax(0, 200px));
+    justify-content: center;
+    margin: 0;
+  }
+
+  .pp-ghost-btn {
+    height: 42px;
+    font-size: 11.5px;
+  }
+
+  /* ---------- 底部注脚：原右侧 DEMO NOTES ---------- */
+  .pp-aside {
+    max-width: none;
+    margin: 0;
+    padding-top: 18px;
+    border-top: 1px solid rgba(15, 63, 53, 0.1);
+  }
+
+  .pp-aside-kicker {
+    margin-bottom: 12px;
+    font-size: 8.5px;
+    letter-spacing: 1.8px;
+    color: #a89484;
+  }
+
+  .pp-tips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 30px;
+  }
+
+  .pp-tips li {
+    padding-left: 26px;
+    font-size: 10.5px;
+    line-height: 1.8;
+    color: #8b9a94;
+  }
+
+  .pp-tips b {
+    top: 1px;
+    font-size: 9px;
+    color: #b39a80;
+  }
+
+  /* 注脚排成网格后不需要原本的分隔短线 */
+  .pp-tips li::after {
+    display: none;
+  }
+
+  /* 弹窗在长页面里必须钉住视口，否则会掉到整页中段 */
+  .pp-sheet,
+  .pp-reward {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+  }
+
+  .pp-sheet {
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .pp-sheet-panel {
+    width: min(480px, 100%);
+    padding: 20px 22px 24px;
+    border-radius: 18px;
+    box-shadow: 0 26px 60px rgba(15, 63, 53, 0.24);
+  }
+
+  .pp-sheet-grid {
+    gap: 10px;
+  }
+
+  .pp-reward {
+    padding: 24px;
+  }
+
+  .pp-toast {
+    position: fixed;
+    bottom: 34px;
+    max-width: 460px;
+    font-size: 11.5px;
+  }
+}
+
+/* 宽屏再进一步：打卡与数据并排、注脚四栏，充分利用 1180px 画布 */
+@media (min-width: 1024px) {
+  .pp-view--home {
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+    column-gap: 28px;
+  }
+
+  .pp-nav,
+  .pp-id,
+  .pp-block--badges,
+  .pp-block--profile,
+  .pp-note,
+  .pp-actions {
+    grid-column: 1 / -1;
+  }
+
+  .pp-block--read {
+    grid-column: 1;
+  }
+
+  .pp-block--data {
+    grid-column: 2;
+  }
+
+  .pp-block--data .pp-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pp-block--badges .pp-badge-icon {
+    font-size: 36px;
+  }
+
+  .pp-block--badges .pp-badges {
+    gap: 10px;
+  }
+
+  .pp-tips {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0 30px;
+  }
+}
+
+/* ============================================================
    全局移动端适配（≤768px）
    - 左右分栏统一改为竖向堆叠，避免两栏被压到互相重叠
    - 横向按钮组改为整行铺满

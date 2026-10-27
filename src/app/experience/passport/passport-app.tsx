@@ -611,7 +611,7 @@ export default function PassportApp() {
                   </div>
                 </div>
 
-                <section className="pp-block">
+                <section className="pp-block pp-block--read">
                   <div className="pp-block-head">
                     <h3>阅读打卡</h3>
                     <span>每 {READ_STEP_MINUTES} 分钟抽 1 枚</span>
@@ -654,7 +654,7 @@ export default function PassportApp() {
                   </div>
                 </section>
 
-                <section className="pp-block">
+                <section className="pp-block pp-block--data">
                   <div className="pp-block-head">
                     <h3>阅读数据</h3>
                     <span>本机实时记录</span>
@@ -678,7 +678,7 @@ export default function PassportApp() {
                   </div>
                 </section>
 
-                <section className="pp-block">
+                <section className="pp-block pp-block--badges">
                   <div className="pp-block-head">
                     <h3>我的徽章墙</h3>
                     <span>
@@ -719,7 +719,7 @@ export default function PassportApp() {
                   </p>
                 </section>
 
-                <section className="pp-block">
+                <section className="pp-block pp-block--profile">
                   <div className="pp-block-head">
                     <h3>个人身份</h3>
                     <span>可随时修改</span>
