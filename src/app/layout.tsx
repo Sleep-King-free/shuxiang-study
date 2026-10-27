@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import SiteHeader from '@/components/site-header';
 import RevealObserver from '@/components/reveal-observer';
+import ScrollManager from '@/components/scroll-manager';
 
 // 移动端视口：锁定 CSS 像素宽度，禁止双指缩放造成的布局抖动；
 // viewportFit=cover 让刘海屏/圆角屏按安全区排版，避免内容被裁切。
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <SiteHeader />
         <RevealObserver />
+        <ScrollManager />
         {children}
       </body>
     </html>

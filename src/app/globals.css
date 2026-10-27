@@ -29,7 +29,10 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* 不要用 smooth：Next 16 路由切换时会对页面根节点的子元素逐个 scrollIntoView，
+     逆序执行且第一个是 <footer>，smooth 会把这几次调用变成动画，导致切页后停在页尾。
+     页内锚点的平滑滚动改由 ScrollManager 组件单独接管。 */
+  scroll-behavior: auto;
   scroll-padding-top: 118px;
   /* iOS 旋转屏幕时会自动放大正文字号，撑破容器，这里锁定 100% */
   -webkit-text-size-adjust: 100%;
