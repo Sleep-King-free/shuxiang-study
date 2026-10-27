@@ -53,22 +53,38 @@ const shot = (page, name) => page.locator('.pp-phone').screenshot({ path: join(O
   });
   await shot(page, '03-home');
 
-  // 性别切换
-  await page.click('.pp-seg-item:has-text("女")');
-  await page.waitForTimeout(300);
-  report.genderOn = (await page.textContent('.pp-seg-item.is-on'))?.trim();
-  report.genderPressed = await page.getAttribute('.pp-seg-item:has-text("女")', 'aria-pressed');
+  // 卡片上的性别徽标
+  report.genderBadge = (await page.textContent('.pp-gender'))?.trim();
 
-  // 头像浮层
-  await page.click('.pp-id-avatar');
-  await page.waitForTimeout(500);
+  // 点性别徽标 → 居中编辑弹窗，改性别
+  await page.click('.pp-gender');
+  await page.waitForTimeout(400);
   report.sheetOpen = (await page.locator('.pp-sheet').count()) === 1;
-  await shot(page, '04-avatar-sheet');
+  report.sheetCentered = await page.evaluate(() => {
+    const panel = document.querySelector('.pp-sheet-panel');
+    if (!panel) return false;
+    const box = panel.getBoundingClientRect();
+    const dx = Math.abs(box.left + box.width / 2 - window.innerWidth / 2);
+    const dy = Math.abs(box.top + box.height / 2 - window.innerHeight / 2);
+    return dx < 4 && dy < 4;
+  });
+  await shot(page, '04-identity-modal');
 
+  await page.click('.pp-gender-opt:has-text("女")');
+  await page.waitForTimeout(250);
+  report.genderPressed = await page.getAttribute('.pp-gender-opt:has-text("女")', 'aria-pressed');
+
+  // 同一弹窗里换头像
   await page.click('.pp-sheet-item:has-text("陶土")');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(250);
+  report.avatarClassInModal = await page.getAttribute('.pp-sheet-item.is-on .pp-avatar', 'class');
+
+  await page.click('.pp-sheet-done');
+  await page.waitForTimeout(400);
   report.sheetClosed = (await page.locator('.pp-sheet').count()) === 0;
+  report.genderOn = (await page.textContent('.pp-gender'))?.trim();
   report.avatarClass = await page.getAttribute('.pp-id-avatar .pp-avatar', 'class');
+  report.profileBlockGone = (await page.locator('.pp-block--profile').count()) === 0;
   await shot(page, '05-home-updated');
 
   // 刷新恢复
@@ -76,7 +92,7 @@ const shot = (page, name) => page.locator('.pp-phone').screenshot({ path: join(O
   await page.waitForTimeout(800);
   report.restoredHome = (await page.locator('.pp-view--home').count()) === 1;
   report.restoredUid = (await page.textContent('.pp-uid'))?.trim();
-  report.restoredGender = (await page.textContent('.pp-seg-item.is-on'))?.trim();
+  report.restoredGender = (await page.textContent('.pp-gender'))?.trim();
   report.restoredAvatar = await page.getAttribute('.pp-id-avatar .pp-avatar', 'class');
 
   // 编号复制
@@ -99,7 +115,7 @@ const shot = (page, name) => page.locator('.pp-phone').screenshot({ path: join(O
   await page.click('.pp-submit');
   await page.waitForTimeout(900);
   report.reentryUid = (await page.textContent('.pp-uid'))?.trim();
-  report.reentryGender = (await page.textContent('.pp-seg-item.is-on'))?.trim();
+  report.reentryGender = (await page.textContent('.pp-gender'))?.trim();
   report.reentryAvatar = await page.getAttribute('.pp-id-avatar .pp-avatar', 'class');
 
   report.overflow = await page.evaluate(
@@ -133,6 +149,12 @@ const shot = (page, name) => page.locator('.pp-phone').screenshot({ path: join(O
 
   await page.click('.pp-id-avatar');
   await page.waitForTimeout(500);
+  report.mobileSheetInViewport = await page.evaluate(() => {
+    const panel = document.querySelector('.pp-sheet-panel');
+    if (!panel) return false;
+    const box = panel.getBoundingClientRect();
+    return box.top >= 0 && box.bottom <= window.innerHeight + 1 && box.left >= 0 && box.right <= window.innerWidth + 1;
+  });
   await page.screenshot({ path: join(OUT, '09-mobile-sheet.png') });
   await context.close();
 }

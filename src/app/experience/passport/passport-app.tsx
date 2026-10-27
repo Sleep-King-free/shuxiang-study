@@ -121,6 +121,40 @@ function Icon({ name }: { name: keyof typeof ICON }) {
   );
 }
 
+/** 性别小图标：男 / 女 / 保密（锁），与卡片的金属细线风格一致 */
+function GenderMark({ gender }: { gender: Gender }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {gender === 'male' && (
+        <>
+          <circle cx="9" cy="12.4" r="4.2" />
+          <path d="M12.2 9.2 16.3 5.1M12.9 5h3.4v3.4" />
+        </>
+      )}
+      {gender === 'female' && (
+        <>
+          <circle cx="10" cy="12.8" r="4.2" />
+          <path d="M10 8.6V4.2M8 6.4h4" />
+        </>
+      )}
+      {gender === 'secret' && (
+        <>
+          <rect x="5" y="8.8" width="10" height="7" rx="1.8" />
+          <path d="M7.6 8.8V7.2a2.4 2.4 0 0 1 4.8 0v1.6" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 function Face() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -476,6 +510,7 @@ export default function PassportApp() {
   }, [sheet, reward]);
 
   const currentAvatar = AVATARS[active?.avatar ?? 0] ?? AVATARS[0];
+  const currentGender = GENDERS.find((item) => item.id === (active?.gender ?? 'secret')) ?? GENDERS[2];
 
   return (
     <div className="pp-stage">
@@ -579,16 +614,42 @@ export default function PassportApp() {
                   </div>
 
                   <div className="pp-id-body">
+                    {/* 头像即入口：右下角相机角标提示可点击更换 */}
                     <button
                       className="pp-id-avatar"
                       type="button"
                       onClick={openSheet}
-                      aria-label="更换头像"
+                      aria-label={`更换头像，当前「${currentAvatar.label}」`}
                     >
                       <Avatar tone={currentAvatar.tone} size="lg" />
+                      <span className="pp-id-avatar-badge" aria-hidden="true">
+                        <svg
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3.2 6.9h2.4l1.2-1.8h6.4l1.2 1.8h2.4a.9.9 0 0 1 .9.9v6.5a.9.9 0 0 1-.9.9H3.2a.9.9 0 0 1-.9-.9V7.8a.9.9 0 0 1 .9-.9Z" />
+                          <circle cx="10" cy="10.9" r="2.5" />
+                        </svg>
+                      </span>
                     </button>
                     <div className="pp-id-name">
-                      <strong>读者</strong>
+                      <strong>
+                        读者
+                        <button
+                          className="pp-gender"
+                          type="button"
+                          onClick={openSheet}
+                          title="点击修改性别"
+                          aria-label={`性别：${currentGender.label}，点击修改`}
+                        >
+                          <GenderMark gender={currentGender.id} />
+                          {currentGender.label}
+                        </button>
+                      </strong>
                       <small>绑定 {maskPhone(active.phone)}</small>
                     </div>
                   </div>
@@ -719,42 +780,6 @@ export default function PassportApp() {
                   </p>
                 </section>
 
-                <section className="pp-block pp-block--profile">
-                  <div className="pp-block-head">
-                    <h3>个人身份</h3>
-                    <span>可随时修改</span>
-                  </div>
-
-                  <div className="pp-row">
-                    <span className="pp-row-label">性别</span>
-                    <div className="pp-seg" role="group" aria-label="性别">
-                      {GENDERS.map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          className={`pp-seg-item${active.gender === item.id ? ' is-on' : ''}`}
-                          aria-pressed={active.gender === item.id}
-                          onClick={() => updatePassport({ gender: item.id })}
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="pp-row">
-                    <span className="pp-row-label">头像</span>
-                    <button className="pp-row-avatar" type="button" onClick={openSheet}>
-                      <Avatar tone={currentAvatar.tone} />
-                      <span>
-                        {currentAvatar.label}
-                        <small>更换</small>
-                      </span>
-                      <i aria-hidden="true">›</i>
-                    </button>
-                  </div>
-                </section>
-
                 <p className="pp-note">
                   阅读时长与徽章按手机号分开存在本机，刷新或重新登录后会自动恢复。
                 </p>
@@ -773,7 +798,7 @@ export default function PassportApp() {
             <span className="pp-home-bar" aria-hidden="true" />
 
             {sheet && active && (
-              <div className="pp-sheet" role="dialog" aria-modal="true" aria-label="更换头像">
+              <div className="pp-sheet" role="dialog" aria-modal="true" aria-label="编辑身份">
                 <button
                   className="pp-sheet-backdrop"
                   type="button"
@@ -782,29 +807,50 @@ export default function PassportApp() {
                 />
                 <div className="pp-sheet-panel">
                   <header className="pp-sheet-head">
-                    <b>更换头像</b>
+                    <span className="pp-sheet-kicker">PASSPORT · IDENTITY</span>
                     <button ref={doneRef} className="pp-sheet-done" type="button" onClick={() => setSheet(false)}>
                       完成
                     </button>
                   </header>
-                  <p className="pp-sheet-copy">选择一种底色，头像会立刻更新到护照卡。</p>
-                  <div className="pp-sheet-grid">
-                    {AVATARS.map((item, index) => (
-                      <button
-                        key={item.tone}
-                        type="button"
-                        className={`pp-sheet-item${active.avatar === index ? ' is-on' : ''}`}
-                        aria-pressed={active.avatar === index}
-                        onClick={() => {
-                          updatePassport({ avatar: index });
-                          setSheet(false);
-                          showToast(`头像已更换为「${item.label}」`);
-                        }}
-                      >
-                        <Avatar tone={item.tone} />
-                        <small>{item.label}</small>
-                      </button>
-                    ))}
+
+                  <h4 className="pp-sheet-title">编辑身份</h4>
+                  <p className="pp-sheet-copy">头像与性别会立即写回护照卡，只保存在这台设备。</p>
+
+                  <div className="pp-sheet-section">
+                    <span className="pp-sheet-label">头像底色</span>
+                    <div className="pp-sheet-grid">
+                      {AVATARS.map((item, index) => (
+                        <button
+                          key={item.tone}
+                          type="button"
+                          className={`pp-sheet-item${active.avatar === index ? ' is-on' : ''}`}
+                          aria-pressed={active.avatar === index}
+                          aria-label={`头像：${item.label}`}
+                          onClick={() => updatePassport({ avatar: index })}
+                        >
+                          <Avatar tone={item.tone} />
+                          <small>{item.label}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pp-sheet-section">
+                    <span className="pp-sheet-label">性别</span>
+                    <div className="pp-gender-opts" role="group" aria-label="性别">
+                      {GENDERS.map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className={`pp-gender-opt${active.gender === item.id ? ' is-on' : ''}`}
+                          aria-pressed={active.gender === item.id}
+                          onClick={() => updatePassport({ gender: item.id })}
+                        >
+                          <GenderMark gender={item.id} />
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

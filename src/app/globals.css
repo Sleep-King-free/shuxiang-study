@@ -4421,6 +4421,42 @@ footer {
   font: 600 17px var(--serif);
 }
 
+/* 性别徽标：贴在「读者」右侧，小圆角标签 + 图标，不占额外一行 */
+.pp-gender {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 7px;
+  padding: 2px 7px 2px 5px;
+  border: 1px solid rgba(231, 196, 119, 0.42);
+  border-radius: 999px;
+  background: rgba(231, 196, 119, 0.13);
+  font-family: inherit;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #f1d49b;
+  vertical-align: 2px;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.pp-gender svg {
+  width: 11px;
+  height: 11px;
+}
+
+.pp-gender:hover {
+  border-color: rgba(231, 196, 119, 0.7);
+  background: rgba(231, 196, 119, 0.24);
+  color: #fbeac2;
+}
+
+.pp-gender:focus-visible {
+  outline: 1px dashed rgba(231, 196, 119, 0.75);
+  outline-offset: 2px;
+}
+
 .pp-id-name small {
   display: block;
   margin-top: 3px;
@@ -4467,7 +4503,7 @@ footer {
   height: 32px;
 }
 
-/* 护照卡上的头像即入口，右下挂一枚「换」字角标 */
+/* 护照卡上的头像即入口，右下角挂一枚相机角标提示可换 */
 .pp-id-avatar {
   position: relative;
   flex: none;
@@ -4479,20 +4515,30 @@ footer {
   cursor: pointer;
 }
 
-.pp-id-avatar::after {
-  content: '换';
+.pp-id-avatar-badge {
   position: absolute;
-  right: -3px;
-  bottom: -3px;
+  right: -4px;
+  bottom: -4px;
   display: grid;
   place-items: center;
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
   border: 1px solid rgba(231, 196, 119, 0.55);
   border-radius: 50%;
   background: #123f34;
-  font: 600 8px/1 var(--serif);
   color: #f1d49b;
+  box-shadow: 0 2px 7px rgba(6, 24, 20, 0.45);
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.pp-id-avatar-badge svg {
+  width: 10px;
+  height: 10px;
+}
+
+.pp-id-avatar:hover .pp-id-avatar-badge {
+  background: #f1d49b;
+  color: #123f34;
 }
 
 .pp-id-avatar:hover .pp-avatar.is-lg {
@@ -4557,114 +4603,6 @@ footer {
 .pp-block-head span {
   font-size: 9.5px;
   color: #8b9a94;
-}
-
-.pp-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 11px 12px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--white);
-}
-
-.pp-row + .pp-row {
-  margin-top: 8px;
-}
-
-.pp-row-label {
-  font-size: 11.5px;
-  color: #52645d;
-  white-space: nowrap;
-}
-
-.pp-seg {
-  display: flex;
-  gap: 2px;
-  padding: 3px;
-  border-radius: 999px;
-  background: rgba(15, 63, 53, 0.06);
-}
-
-.pp-seg-item {
-  padding: 5px 11px;
-  border: 0;
-  border-radius: 999px;
-  background: none;
-  font-size: 11px;
-  font-family: inherit;
-  color: #5d7169;
-  cursor: pointer;
-  transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
-}
-
-.pp-seg-item:hover {
-  color: var(--ink);
-}
-
-.pp-seg-item.is-on {
-  background: var(--ink);
-  color: #f7f1e3;
-  box-shadow: 0 4px 10px rgba(15, 63, 53, 0.24);
-}
-
-.pp-seg-item:focus-visible {
-  outline: 2px solid var(--clay);
-  outline-offset: 1px;
-}
-
-/* 头像行：缩略图 + 当前底色 + 更换 */
-.pp-row-avatar {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 2px 4px 2px 2px;
-  border: 0;
-  border-radius: 999px;
-  background: none;
-  cursor: pointer;
-}
-
-.pp-row-avatar .pp-avatar {
-  width: 28px;
-  height: 28px;
-  transition: box-shadow 0.18s ease;
-}
-
-.pp-row-avatar .pp-avatar svg {
-  width: 20px;
-  height: 20px;
-}
-
-.pp-row-avatar > span:not(.pp-avatar) {
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
-  font-size: 11.5px;
-  color: #2c4c42;
-}
-
-.pp-row-avatar small {
-  font-size: 9.5px;
-  color: var(--clay);
-}
-
-.pp-row-avatar i {
-  font-style: normal;
-  font-size: 13px;
-  line-height: 1;
-  color: #9aa8a2;
-}
-
-.pp-row-avatar:hover .pp-avatar {
-  box-shadow: 0 0 0 2px rgba(15, 63, 53, 0.12);
-}
-
-.pp-row-avatar:focus-visible {
-  outline: 2px solid var(--clay);
-  outline-offset: 2px;
 }
 
 .pp-grid {
@@ -5260,14 +5198,14 @@ footer {
   background: #fdf1ec;
 }
 
-/* 头像选择浮层 */
+/* 身份编辑弹窗：居中模态，沿用护照卡的深绿底 + 鎏金细线 */
 .pp-sheet {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 30;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 24px 18px;
   animation: pp-fade-in 0.2s ease both;
 }
 
@@ -5276,51 +5214,95 @@ footer {
   inset: 0;
   padding: 0;
   border: 0;
-  background: rgba(11, 40, 34, 0.42);
+  background: rgba(6, 24, 20, 0.58);
   cursor: pointer;
 }
 
 .pp-sheet-panel {
   position: relative;
-  padding: 16px 18px 20px;
-  border-radius: 20px 20px 0 0;
-  background: #fdfaf3;
-  box-shadow: 0 -18px 40px rgba(15, 63, 53, 0.22);
-  animation: pp-sheet-up 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  width: min(420px, 100%);
+  max-height: min(86dvh, 640px);
+  overflow-y: auto;
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(231, 196, 119, 0.45);
+  border-radius: 20px;
+  background: linear-gradient(150deg, #17503f, #0b2e27 70%, #124237);
+  color: #f3e9d6;
+  box-shadow: 0 30px 70px rgba(6, 24, 20, 0.5);
+  animation: pp-sheet-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .pp-sheet-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
-.pp-sheet-head b {
-  font: 600 14px var(--serif);
-  letter-spacing: 0.5px;
+.pp-sheet-kicker {
+  font: 700 8px/1 Arial, sans-serif;
+  letter-spacing: 1.8px;
+  color: rgba(231, 196, 119, 0.72);
 }
 
 .pp-sheet-done {
-  padding: 4px 10px;
-  border: 0;
+  padding: 5px 12px;
+  border: 1px solid rgba(231, 196, 119, 0.5);
   border-radius: 999px;
-  background: rgba(15, 63, 53, 0.08);
+  background: rgba(231, 196, 119, 0.14);
   font-family: inherit;
   font-size: 10.5px;
-  color: var(--ink);
+  letter-spacing: 0.6px;
+  color: #f1d49b;
   cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.pp-sheet-done:hover {
+  border-color: #e7c477;
+  background: #e7c477;
+  color: #123f34;
 }
 
 .pp-sheet-done:focus-visible {
-  outline: 2px solid var(--clay);
+  outline: 1px dashed rgba(231, 196, 119, 0.85);
   outline-offset: 2px;
 }
 
+.pp-sheet-title {
+  margin: 12px 0 0;
+  font: 600 18px var(--serif);
+  letter-spacing: 1px;
+  color: #f7e7c6;
+}
+
 .pp-sheet-copy {
-  margin: 6px 0 14px;
+  margin: 6px 0 16px;
+  font-size: 10.5px;
+  line-height: 1.7;
+  color: rgba(243, 233, 214, 0.6);
+}
+
+.pp-sheet-section + .pp-sheet-section {
+  margin-top: 16px;
+}
+
+.pp-sheet-label {
+  display: block;
+  margin-bottom: 9px;
   font-size: 10px;
-  line-height: 1.6;
-  color: #8b9a94;
+  letter-spacing: 1.2px;
+  color: rgba(231, 196, 119, 0.8);
+}
+
+.pp-sheet-label::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 1px;
+  margin-right: 7px;
+  vertical-align: 3px;
+  background: rgba(231, 196, 119, 0.55);
 }
 
 .pp-sheet-grid {
@@ -5335,11 +5317,11 @@ footer {
   align-items: center;
   gap: 6px;
   padding: 10px 4px 8px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(231, 196, 119, 0.18);
   border-radius: 14px;
-  background: #fffdf7;
+  background: rgba(255, 253, 247, 0.05);
   cursor: pointer;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
 }
 
 .pp-sheet-item .pp-avatar {
@@ -5355,22 +5337,74 @@ footer {
 .pp-sheet-item small {
   font-size: 9.5px;
   letter-spacing: 0.3px;
-  color: #6d8079;
+  color: rgba(243, 233, 214, 0.6);
 }
 
 .pp-sheet-item:hover {
-  border-color: rgba(15, 63, 53, 0.28);
+  border-color: rgba(231, 196, 119, 0.45);
   transform: translateY(-1px);
 }
 
 .pp-sheet-item.is-on {
-  border-color: var(--clay);
-  box-shadow: 0 0 0 2px rgba(201, 87, 54, 0.12);
+  border-color: #e7c477;
+  background: rgba(231, 196, 119, 0.12);
+  box-shadow: 0 0 0 1px rgba(231, 196, 119, 0.25);
+}
+
+.pp-sheet-item.is-on small {
+  color: #f7e7c6;
 }
 
 .pp-sheet-item:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 1px;
+  outline: 1px dashed rgba(231, 196, 119, 0.85);
+  outline-offset: 2px;
+}
+
+/* 性别三选一：选中态用鎏金实底，与护照卡的金属描边呼应 */
+.pp-gender-opts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pp-gender-opt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 9px 4px;
+  border: 1px solid rgba(231, 196, 119, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 253, 247, 0.05);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  color: rgba(243, 233, 214, 0.75);
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.2s ease, color 0.18s ease;
+}
+
+.pp-gender-opt svg {
+  width: 13px;
+  height: 13px;
+}
+
+.pp-gender-opt:hover {
+  border-color: rgba(231, 196, 119, 0.45);
+  color: #f7e7c6;
+}
+
+.pp-gender-opt.is-on {
+  border-color: #e7c477;
+  background: linear-gradient(150deg, #f2d79b, #e0b96e);
+  color: #123f34;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.pp-gender-opt:focus-visible {
+  outline: 1px dashed rgba(231, 196, 119, 0.85);
+  outline-offset: 2px;
 }
 
 @keyframes pp-fade-in {
@@ -5382,11 +5416,13 @@ footer {
   }
 }
 
-@keyframes pp-sheet-up {
+@keyframes pp-sheet-in {
   from {
-    transform: translateY(100%);
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
   }
   to {
+    opacity: 1;
     transform: none;
   }
 }
@@ -5537,11 +5573,7 @@ footer {
     gap: 12px;
   }
 
-  /* 长页面下浮层与提示改为钉住视口 */
-  .pp-sheet {
-    position: fixed;
-  }
-
+  /* 长页面下的轻提示改为钉住视口 */
   .pp-toast {
     position: fixed;
     bottom: 30px;
@@ -5778,6 +5810,19 @@ footer {
     font-size: 11px;
   }
 
+  /* 宽屏下姓名放大，徽标跟着放大一档 */
+  .pp-gender {
+    margin-left: 10px;
+    padding: 3px 9px 3px 7px;
+    font-size: 10.5px;
+    vertical-align: 3px;
+  }
+
+  .pp-gender svg {
+    width: 12px;
+    height: 12px;
+  }
+
   .pp-id-uid {
     grid-column: 2;
     grid-row: 2;
@@ -5843,26 +5888,6 @@ footer {
     font-size: 26px;
   }
 
-  /* 个人身份：性别与头像各占一列 */
-  .pp-block--profile {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 16px;
-    align-items: start;
-  }
-
-  .pp-block--profile .pp-block-head {
-    grid-column: 1 / -1;
-  }
-
-  .pp-block--profile .pp-row + .pp-row {
-    margin-top: 0;
-  }
-
-  .pp-block--profile .pp-row {
-    padding: 13px 14px;
-  }
-
   .pp-note {
     margin: 0;
     font-size: 11px;
@@ -5919,33 +5944,21 @@ footer {
     display: none;
   }
 
-  /* 弹窗在长页面里必须钉住视口，否则会掉到整页中段 */
-  .pp-sheet,
+  /* 抽奖弹窗在长页面里必须钉住视口，否则会掉到整页中段 */
   .pp-reward {
     position: fixed;
     inset: 0;
     z-index: 95;
-  }
-
-  .pp-sheet {
-    align-items: center;
-    justify-content: center;
     padding: 24px;
   }
 
   .pp-sheet-panel {
-    width: min(480px, 100%);
-    padding: 20px 22px 24px;
-    border-radius: 18px;
-    box-shadow: 0 26px 60px rgba(15, 63, 53, 0.24);
+    width: min(460px, 100%);
+    padding: 22px 24px 24px;
   }
 
   .pp-sheet-grid {
     gap: 10px;
-  }
-
-  .pp-reward {
-    padding: 24px;
   }
 
   .pp-toast {
@@ -5966,7 +5979,6 @@ footer {
   .pp-nav,
   .pp-id,
   .pp-block--badges,
-  .pp-block--profile,
   .pp-note,
   .pp-actions {
     grid-column: 1 / -1;
